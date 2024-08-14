@@ -5,7 +5,7 @@ export const Home: React.FC = () => {
     <div className="bg-primary">
       <div className="relative flex flex-col justify-center items-center h-screen gap-5">
         <h1 className="text-lg font-bold text-secondary">
-          Hello, Apakah ingin bertanya dengan sahabat?
+          Hi, Apakah Anda ingin bertanya dengan sahabat?
         </h1>
         <Link
           to="/chat"

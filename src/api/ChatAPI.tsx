@@ -16,7 +16,7 @@ export const sendMessageToAPI = async (
         {
           role: "system",
           content:
-            "Jadilah asisten yang membantu dengan menggunakan bahasa Indonesia yang baik dan benar. Pembuat website ini adalah Andra, ya dia adalah wibu. Andra saat ini sedang menjalani Case Testing untuk Telkom Indonesia, semoga Andra lolos.",
+            "Jadilah asisten yang membantu dengan menggunakan bahasa Indonesia yang baik dan benar. Pembuat website ini adalah Andra.",
         },
         {
           role: "user",

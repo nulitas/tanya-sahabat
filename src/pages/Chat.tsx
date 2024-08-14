@@ -4,9 +4,13 @@ import { sendMessageToAPI } from "../api/ChatAPI";
 import axios from "axios";
 import Sidebar from "../components/Sidebar";
 import { TailSpin } from "react-loader-spinner";
+import assistantPfp from "../../public/sahabat_wibu.png";
+import userPfp from "../../public/sahabat_ai.png";
 
 export const Chat: React.FC = () => {
-  const [messages, setMessages] = useState<string[]>([]);
+  const [messages, setMessages] = useState<{ role: string; content: string }[]>(
+    []
+  );
   const [loading, setLoading] = useState<boolean>(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
   const [inputText, setInputText] = useState<string>("");
@@ -19,13 +23,8 @@ export const Chat: React.FC = () => {
     const fetchChatHistory = async () => {
       try {
         const response = await axios.get("http://127.0.0.1:8000/messages/");
-        const chatHistory = response.data.map(
-          (msg: { role: string; content: string }) =>
-            `${msg.role === "user" ? "Kamu" : "Sahabat"}: ${msg.content}`
-        );
-        setMessages(chatHistory);
-
-        if (chatHistory.length > 0) {
+        setMessages(response.data);
+        if (response.data.length > 0) {
           setShowExamples(false);
         }
       } catch (error) {
@@ -49,23 +48,29 @@ export const Chat: React.FC = () => {
 
   const handleSendMessage = async (message: string) => {
     setLoading(true);
-    const userMessage = `Kamu: ${message}`;
-    setMessages((prevMessages) => [...prevMessages, userMessage]);
+
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      { role: "user", content: message },
+    ]);
 
     await saveMessageToDB("user", message);
 
     const response = await sendMessageToAPI(message);
 
     if (response) {
-      const assistantMessage = `Sahabat: ${response.content}`;
-      setMessages((prevMessages) => [...prevMessages, assistantMessage]);
-
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { role: "assistant", content: response.content },
+      ]);
       await saveMessageToDB("assistant", response.content);
     } else {
-      const errorMessage = "Sahabat: Maaf, sepertinya ada kesalahan.";
-      setMessages((prevMessages) => [...prevMessages, errorMessage]);
-
-      await saveMessageToDB("assistant", "Maaf, sepertinya ada kesalahan.");
+      const errorMessage = "Maaf, sepertinya ada kesalahan.";
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { role: "assistant", content: errorMessage },
+      ]);
+      await saveMessageToDB("assistant", errorMessage);
     }
 
     setLoading(false);
@@ -82,21 +87,45 @@ export const Chat: React.FC = () => {
   };
 
   return (
-    <div className="flex">
+    <div className="flex flex-col md:flex-row">
       <Sidebar
         isOpen={isSidebarOpen}
         toggleSidebar={toggleSidebar}
         chatRef={chatRef}
       />
       <div
-        className={`flex flex-col items-center p-4 max-w-3xl mx-auto transition-opacity duration-300 flex-1 ${
+        className={`flex flex-col items-center p-4 w-full md:max-w-3xl mx-auto transition-opacity duration-300 flex-1 ${
           isSidebarOpen ? "hidden md:flex" : ""
         }`}
       >
         <div className="flex-1 w-full overflow-y-auto mb-4" ref={chatRef}>
           {messages.map((msg, index) => (
-            <div key={index} className="mb-2">
-              {msg}
+            <div
+              key={index}
+              className={`mb-6 flex items-center ${
+                msg.role === "user" ? "justify-start" : "justify-end"
+              }`}
+            >
+              {msg.role === "user" ? (
+                <img
+                  src={userPfp}
+                  alt="User"
+                  className="w-8 h-8 mr-2 sm:w-10 sm:h-10"
+                />
+              ) : (
+                <img
+                  src={assistantPfp}
+                  alt="Assistant"
+                  className="w-8 h-8 mr-2 sm:w-10 sm:h-10"
+                />
+              )}
+              <div
+                className={`p-2 rounded-lg max-w-[80%] text-white ${
+                  msg.role === "user" ? "bg-blue-500" : "bg-gray-700"
+                }`}
+              >
+                {msg.content}
+              </div>
             </div>
           ))}
 
@@ -108,11 +137,11 @@ export const Chat: React.FC = () => {
         </div>
 
         {showExamples && messages.length === 0 && (
-          <div className="mb-4 transition-opacity duration-500 ease-in-out fade-in">
+          <div className="mb-4 transition-opacity duration-500 ease-in-out fade-in w-full">
             {exampleQuestions.map((question, index) => (
               <div
                 key={index}
-                className=" p-2 mb-2 cursor-pointer bg-sidebar hover:bg-text_input_hover duration-200 ease-in-out rounded animate-fade"
+                className="p-2 mb-2 cursor-pointer bg-sidebar hover:bg-text_input_hover duration-200 ease-in-out rounded animate-fade"
                 onClick={() => handleExampleClick(question)}
               >
                 {question}
