@@ -1,19 +1,26 @@
-import React, { useState } from "react";
 import { AiOutlineSend } from "react-icons/ai";
 
 interface ChatInputProps {
   onSendMessage: (message: string) => void;
   loading: boolean;
+  inputText: string;
+  setInputText: (message: string) => void;
+  setShowExamples: (show: boolean) => void;
 }
 
-const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, loading }) => {
-  const [message, setMessage] = useState<string>("");
-
+const ChatInput: React.FC<ChatInputProps> = ({
+  onSendMessage,
+  loading,
+  inputText,
+  setInputText,
+  setShowExamples,
+}) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (message.trim() !== "") {
-      onSendMessage(message);
-      setMessage("");
+    if (inputText.trim() !== "") {
+      onSendMessage(inputText);
+      setInputText("");
+      setShowExamples(true);
     }
   };
 
@@ -28,8 +35,15 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, loading }) => {
           rows={1}
           className="bg-transparent outline-none text-white w-full placeholder-[#A3A3A3] resize-none"
           placeholder="Enter a prompt here"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
+          value={inputText}
+          onChange={(e) => {
+            setInputText(e.target.value);
+            if (e.target.value.trim() !== "") {
+              setShowExamples(false);
+            } else {
+              setShowExamples(true);
+            }
+          }}
           disabled={loading}
         />
         <button

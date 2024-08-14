@@ -8,7 +8,11 @@ export const Chat: React.FC = () => {
   const [messages, setMessages] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
+  const [inputText, setInputText] = useState<string>("");
+  const [showExamples, setShowExamples] = useState<boolean>(true);
   const chatRef = useRef<HTMLDivElement>(null);
+
+  const exampleQuestions = ["Siapakah yang membuat website ini?"];
 
   useEffect(() => {
     const fetchChatHistory = async () => {
@@ -19,6 +23,10 @@ export const Chat: React.FC = () => {
             `${msg.role === "user" ? "You" : "Assistant"}: ${msg.content}`
         );
         setMessages(chatHistory);
+
+        if (chatHistory.length > 0) {
+          setShowExamples(false);
+        }
       } catch (error) {
         console.error("Failed to fetch chat history:", error);
       }
@@ -60,10 +68,16 @@ export const Chat: React.FC = () => {
     }
 
     setLoading(false);
+    setShowExamples(false);
   };
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const handleExampleClick = (question: string) => {
+    setInputText(question);
+    setShowExamples(false);
   };
 
   return (
@@ -85,8 +99,29 @@ export const Chat: React.FC = () => {
             </div>
           ))}
         </div>
+
+        {showExamples && messages.length === 0 && (
+          <div className="mb-4 transition-opacity duration-500 ease-in-out fade-in">
+            {exampleQuestions.map((question, index) => (
+              <div
+                key={index}
+                className="p-2 mb-2 cursor-pointer hover:bg-gray-700 rounded"
+                onClick={() => handleExampleClick(question)}
+              >
+                {question}
+              </div>
+            ))}
+          </div>
+        )}
+
         <div className="absolute bottom-10 w-full sm:max-w-lg text-secondary px-4">
-          <ChatInput onSendMessage={handleSendMessage} loading={loading} />
+          <ChatInput
+            onSendMessage={handleSendMessage}
+            loading={loading}
+            inputText={inputText}
+            setInputText={setInputText}
+            setShowExamples={setShowExamples}
+          />
         </div>
       </div>
     </div>

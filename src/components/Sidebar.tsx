@@ -17,6 +17,7 @@ const Sidebar: React.FC<{
       window.location.reload();
     } catch (error) {
       console.error("Failed to delete messages:", error);
+      window.location.reload();
     }
   };
 
