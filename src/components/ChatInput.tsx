@@ -1,21 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { AiOutlineSend } from "react-icons/ai";
 
 interface ChatInputProps {
-  initialMessage: string;
+  onSendMessage: (message: string) => void;
+  loading: boolean;
 }
 
-const ChatInput: React.FC<ChatInputProps> = ({ initialMessage }) => {
-  const [message, setMessage] = useState(initialMessage);
-
-  useEffect(() => {
-    setMessage(initialMessage);
-  }, [initialMessage]);
+const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, loading }) => {
+  const [message, setMessage] = useState<string>("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Sent message:", message);
-    setMessage("");
+    if (message.trim() !== "") {
+      onSendMessage(message);
+      setMessage("");
+    }
   };
 
   return (
@@ -31,10 +30,12 @@ const ChatInput: React.FC<ChatInputProps> = ({ initialMessage }) => {
           placeholder="Enter a prompt here"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
+          disabled={loading}
         />
         <button
           type="submit"
           className="inline-flex justify-center p-2 text-[#A3A3A3] rounded-full cursor-pointer hover:bg-[#2D2D2D] hover:text-white"
+          disabled={loading}
         >
           <AiOutlineSend className="w-5 h-5" />
         </button>
