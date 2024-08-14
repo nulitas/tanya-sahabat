@@ -3,6 +3,7 @@ import ChatInput from "../components/ChatInput";
 import { sendMessageToAPI } from "../api/ChatAPI";
 import axios from "axios";
 import Sidebar from "../components/Sidebar";
+import { TailSpin } from "react-loader-spinner";
 
 export const Chat: React.FC = () => {
   const [messages, setMessages] = useState<string[]>([]);
@@ -98,6 +99,12 @@ export const Chat: React.FC = () => {
               {msg}
             </div>
           ))}
+
+          {loading && (
+            <div className="flex justify-center items-center mt-4">
+              <TailSpin height={25} width={25} color="white" />
+            </div>
+          )}
         </div>
 
         {showExamples && messages.length === 0 && (
@@ -105,7 +112,7 @@ export const Chat: React.FC = () => {
             {exampleQuestions.map((question, index) => (
               <div
                 key={index}
-                className="p-2 mb-2 cursor-pointer bg-sidebar hover:bg-text_input_hover duration-200 ease-in-out rounded animate-fade"
+                className=" p-2 mb-2 cursor-pointer bg-sidebar hover:bg-text_input_hover duration-200 ease-in-out rounded animate-fade"
                 onClick={() => handleExampleClick(question)}
               >
                 {question}
