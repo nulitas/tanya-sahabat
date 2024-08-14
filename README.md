@@ -14,6 +14,10 @@ Live : https://tanya-sahabat.vercel.app/
 
 API : https://github.com/nulitas/tanya-sahabat-api/
 
+##
+
+Demo Video : https://drive.google.com/file/d/1k3OCqK_uj-hchxEkp_jE9aVRDnOKyFOv/view?usp=sharing
+
 ## Screenshot
 
 Beberapa screenshot untuk tampilan pada website TanyaSahabat.
