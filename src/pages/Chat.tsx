@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import ChatInput from "../components/ChatInput";
 import { sendMessageToAPI } from "../api/ChatAPI";
+import { useOutletContext } from "react-router-dom";
+interface ChatProps {
+  isSidebarOpen: boolean;
+}
 
 export const Chat: React.FC = () => {
   const [messages, setMessages] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-
+  const { isSidebarOpen } = useOutletContext<ChatProps>();
   const handleSendMessage = async (message: string) => {
     setLoading(true);
     const userMessage = `You: ${message}`;
@@ -27,7 +31,11 @@ export const Chat: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center p-4 max-w-3xl mx-auto">
+    <div
+      className={`flex flex-col items-center p-4 max-w-3xl mx-auto transition-opacity duration-300 ${
+        isSidebarOpen ? "hidden md:flex" : ""
+      }`}
+    >
       <div className="flex-1 w-full overflow-y-auto mb-4">
         {messages.map((msg, index) => (
           <div key={index} className="mb-2">
