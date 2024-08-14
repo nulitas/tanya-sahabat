@@ -1,50 +1,55 @@
-# React + TypeScript + Vite
+# TanyaSahabat
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<table>
+<tr>
+<td>
+Aplikasi website asisten virtual yang memungkinkan pengguna berinteraksi melalui pengaturan percakapan (chat). Antarmuka dapat menerima pertanyaan, memberikan jawaban, dan menyimpan histori percakapan.
+</td>
+</tr>
+</table>
 
-Currently, two official plugins are available:
+## Site
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Live : https://tanya-sahabat.vercel.app/
 
-## Expanding the ESLint configuration
+API : https://github.com/nulitas/tanya-sahabat-api/
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Screenshot
 
-- Configure the top-level `parserOptions` property like this:
+Beberapa screenshot untuk tampilan pada website TanyaSahabat.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+### Home Page
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+Seperti ini.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+![](https://raw.githubusercontent.com/nulitas/tanya-sahabat/main/public/screenshots/home.png)
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+### Tampilan Chat
+
+![](https://raw.githubusercontent.com/nulitas/tanya-sahabat/main/public/screenshots/chat.png)
+
+### Simpan ke PDF
+
+![](https://raw.githubusercontent.com/nulitas/tanya-sahabat/main/public/screenshots/simpan.png)
+
+## Hapus Percakapan
+
+Hapus semua percakapan dalam sekejap.
+
+![](https://raw.githubusercontent.com/nulitas/tanya-sahabat/main/public/screenshots/hapus.png)
+
+## Usage
+
+### Bug / Feature Request
+
+Jika menemukan bug (situs web tidak dapat menangani kueri dan/atau memberikan hasil yang tidak diinginkan), silakan buka masalah [di sini](https://github.com/nulitas/tanya-sahabat/issues/new) dengan menyertakan kueri penelusuran dan hasil yang diharapkan.
+
+## Built with
+
+- [React.js - TypeScript](https://react.dev/) - Build user interfaces out of individual pieces called components written in JavaScript.
+- [FastAPI](https://fastapi.tiangolo.com/) - Modern, fast (high-performance), web framework for building APIs with Python based on standard Python type hints.
+- [TailwindCSS](https://tailwindcss.com/) - A utility-first CSS framework packed with classes like flex, pt-4, text-center and rotate-90 that can be composed to build any design, directly in your markup.
+
+## License
+
+MIT © [Andra ](https://github.com/nulitas)
