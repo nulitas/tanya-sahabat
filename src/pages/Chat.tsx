@@ -1,17 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import ChatInput from "../components/ChatInput";
 import { sendMessageToAPI } from "../api/ChatAPI";
-import { useOutletContext } from "react-router-dom";
 import axios from "axios";
-
-interface ChatProps {
-  isSidebarOpen: boolean;
-}
+import Sidebar from "../components/Sidebar";
 
 export const Chat: React.FC = () => {
   const [messages, setMessages] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const { isSidebarOpen } = useOutletContext<ChatProps>();
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
+  const chatRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchChatHistory = async () => {
@@ -54,32 +51,43 @@ export const Chat: React.FC = () => {
       const assistantMessage = `Assistant: ${response.content}`;
       setMessages((prevMessages) => [...prevMessages, assistantMessage]);
 
-      await saveMessageToDB("system", response.content);
+      await saveMessageToDB("assistant", response.content);
     } else {
       const errorMessage = "Assistant: Sorry, something went wrong.";
       setMessages((prevMessages) => [...prevMessages, errorMessage]);
 
-      await saveMessageToDB("system", "Sorry, something went wrong.");
+      await saveMessageToDB("assistant", "Sorry, something went wrong.");
     }
 
     setLoading(false);
   };
 
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
   return (
-    <div
-      className={`flex flex-col items-center p-4 max-w-3xl mx-auto transition-opacity duration-300 ${
-        isSidebarOpen ? "hidden md:flex" : ""
-      }`}
-    >
-      <div className="flex-1 w-full overflow-y-auto mb-4">
-        {messages.map((msg, index) => (
-          <div key={index} className="mb-2">
-            {msg}
-          </div>
-        ))}
-      </div>
-      <div className="absolute bottom-10 w-full sm:max-w-lg text-secondary px-4">
-        <ChatInput onSendMessage={handleSendMessage} loading={loading} />
+    <div className="flex">
+      <Sidebar
+        isOpen={isSidebarOpen}
+        toggleSidebar={toggleSidebar}
+        chatRef={chatRef}
+      />
+      <div
+        className={`flex flex-col items-center p-4 max-w-3xl mx-auto transition-opacity duration-300 flex-1 ${
+          isSidebarOpen ? "hidden md:flex" : ""
+        }`}
+      >
+        <div className="flex-1 w-full overflow-y-auto mb-4" ref={chatRef}>
+          {messages.map((msg, index) => (
+            <div key={index} className="mb-2">
+              {msg}
+            </div>
+          ))}
+        </div>
+        <div className="absolute bottom-10 w-full sm:max-w-lg text-secondary px-4">
+          <ChatInput onSendMessage={handleSendMessage} loading={loading} />
+        </div>
       </div>
     </div>
   );

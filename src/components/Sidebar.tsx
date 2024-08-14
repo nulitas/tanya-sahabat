@@ -1,12 +1,24 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { CiChat1 } from "react-icons/ci";
+import { GiSave } from "react-icons/gi";
+import { MdOutlineDeleteForever } from "react-icons/md";
 import { FiMenu } from "react-icons/fi";
+import ReactToPrint from "react-to-print";
+import axios from "axios";
 
-const Sidebar: React.FC<{ isOpen: boolean; toggleSidebar: () => void }> = ({
-  isOpen,
-  toggleSidebar,
-}) => {
+const Sidebar: React.FC<{
+  isOpen: boolean;
+  toggleSidebar: () => void;
+  chatRef: React.RefObject<HTMLDivElement>;
+}> = ({ isOpen, toggleSidebar, chatRef }) => {
+  const handleDeleteEverything = async () => {
+    try {
+      await axios.delete("http://127.0.0.1:8000/messages/");
+      alert("All messages have been deleted.");
+    } catch (error) {
+      console.error("Failed to delete messages:", error);
+    }
+  };
+
   return (
     <div
       className={`fixed left-0 top-0 h-full bg-sidebar p-4 z-50 transition-all duration-300 ease-in-out transform ${
@@ -30,19 +42,26 @@ const Sidebar: React.FC<{ isOpen: boolean; toggleSidebar: () => void }> = ({
       {isOpen && (
         <div className="animate-fade">
           <ul className="mt-4">
-            {["History Chat 1", "History Chat 2", "History Chat 3"].map(
-              (chat, index) => (
-                <li key={index} className="mb-1 group">
-                  <Link
-                    to={`/chat/${index + 1}`}
-                    className="flex items-center py-2 px-4 text-gray-300 hover:bg-sidebar_hover hover:text-sidebar_hover_text rounded-md"
-                  >
-                    <CiChat1 />
-                    <span className="text-sm ml-2">{chat}</span>
-                  </Link>
-                </li>
-              )
-            )}
+            <li className="mb-1 group">
+              <ReactToPrint
+                trigger={() => (
+                  <button className="flex items-center py-2 px-4 text-gray-300 hover:bg-sidebar_hover hover:text-sidebar_hover_text rounded-md w-full">
+                    <GiSave />
+                    <span className="text-sm ml-2">Save Memory</span>
+                  </button>
+                )}
+                content={() => chatRef.current}
+              />
+            </li>
+            <li className="mb-1 group">
+              <button
+                onClick={handleDeleteEverything}
+                className="flex items-center py-2 px-4 text-gray-300 hover:bg-sidebar_hover hover:text-sidebar_hover_text rounded-md w-full"
+              >
+                <MdOutlineDeleteForever />
+                <span className="text-sm ml-2">Delete Everything</span>
+              </button>
+            </li>
           </ul>
         </div>
       )}
