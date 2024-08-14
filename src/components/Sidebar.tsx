@@ -4,7 +4,7 @@ import { MdOutlineDeleteForever } from "react-icons/md";
 import { FiMenu } from "react-icons/fi";
 import ReactToPrint from "react-to-print";
 import axios from "axios";
-
+import logo from "../../public/sahabat_wibu.png";
 const Sidebar: React.FC<{
   isOpen: boolean;
   toggleSidebar: () => void;
@@ -14,6 +14,7 @@ const Sidebar: React.FC<{
     try {
       await axios.delete("http://127.0.0.1:8000/messages/");
       alert("All messages have been deleted.");
+      window.location.reload();
     } catch (error) {
       console.error("Failed to delete messages:", error);
     }
@@ -25,7 +26,7 @@ const Sidebar: React.FC<{
         isOpen ? "w-64 translate-x-0" : "w-16 -translate-x-0"
       }`}
     >
-      <div className="flex items-center">
+      <div className="flex items-center ">
         <button
           type="button"
           className="text-lg text-secondary mb-4"
@@ -33,11 +34,22 @@ const Sidebar: React.FC<{
         >
           <FiMenu />
         </button>
-        {isOpen && (
-          <span className="text-lg font-bold text-white ml-3 animate-fade">
-            TanyaSahabat
-          </span>
-        )}
+
+        <img
+          src={logo}
+          alt="Logo"
+          className={`w-8 h-8 ml-3 mb-4 object-contain transition-opacity duration-300 ${
+            isOpen ? "opacity-100" : "opacity-0"
+          }`}
+        />
+
+        <span
+          className={`text-lg font-bold text-white ml-3 mb-4 transition-opacity duration-300 ${
+            isOpen ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          TanyaSahabat
+        </span>
       </div>
       {isOpen && (
         <div className="animate-fade">
