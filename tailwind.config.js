@@ -12,6 +12,7 @@ export default {
         sidebar_hover: "#282a2c",
         sidebar_hover_text: "#c4c7c5",
         text_input: "#282a2c",
+        text_input_hover: "#333537",
       },
       animation: {
         fade: "fadeIn .5s ease-in-out",

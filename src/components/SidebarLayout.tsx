@@ -11,7 +11,7 @@ export const SidebarLayout: React.FC = () => {
   };
 
   return (
-    <div className="relative min-h-screen bg-primary_chat text-secondary">
+    <div className="relative min-h-screen bg-primary_chat text-secondary animate-fade">
       <Sidebar
         isOpen={isSidebarOpen}
         toggleSidebar={toggleSidebar}

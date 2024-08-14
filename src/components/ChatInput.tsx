@@ -34,7 +34,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
           id="chat"
           rows={1}
           className="bg-transparent outline-none text-white w-full placeholder-[#A3A3A3] resize-none"
-          placeholder="Enter a prompt here"
+          placeholder="Masukkan prompt di sini"
           value={inputText}
           onChange={(e) => {
             setInputText(e.target.value);

@@ -20,7 +20,7 @@ export const Chat: React.FC = () => {
         const response = await axios.get("http://127.0.0.1:8000/messages/");
         const chatHistory = response.data.map(
           (msg: { role: string; content: string }) =>
-            `${msg.role === "user" ? "You" : "Assistant"}: ${msg.content}`
+            `${msg.role === "user" ? "Kamu" : "Sahabat"}: ${msg.content}`
         );
         setMessages(chatHistory);
 
@@ -48,7 +48,7 @@ export const Chat: React.FC = () => {
 
   const handleSendMessage = async (message: string) => {
     setLoading(true);
-    const userMessage = `You: ${message}`;
+    const userMessage = `Kamu: ${message}`;
     setMessages((prevMessages) => [...prevMessages, userMessage]);
 
     await saveMessageToDB("user", message);
@@ -56,15 +56,15 @@ export const Chat: React.FC = () => {
     const response = await sendMessageToAPI(message);
 
     if (response) {
-      const assistantMessage = `Assistant: ${response.content}`;
+      const assistantMessage = `Sahabat: ${response.content}`;
       setMessages((prevMessages) => [...prevMessages, assistantMessage]);
 
       await saveMessageToDB("assistant", response.content);
     } else {
-      const errorMessage = "Assistant: Sorry, something went wrong.";
+      const errorMessage = "Sahabat: Maaf, sepertinya ada kesalahan.";
       setMessages((prevMessages) => [...prevMessages, errorMessage]);
 
-      await saveMessageToDB("assistant", "Sorry, something went wrong.");
+      await saveMessageToDB("assistant", "Maaf, sepertinya ada kesalahan.");
     }
 
     setLoading(false);
@@ -105,7 +105,7 @@ export const Chat: React.FC = () => {
             {exampleQuestions.map((question, index) => (
               <div
                 key={index}
-                className="p-2 mb-2 cursor-pointer hover:bg-gray-700 rounded"
+                className="p-2 mb-2 cursor-pointer bg-sidebar hover:bg-text_input_hover duration-200 ease-in-out rounded animate-fade"
                 onClick={() => handleExampleClick(question)}
               >
                 {question}
