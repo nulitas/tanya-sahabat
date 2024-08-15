@@ -4,8 +4,8 @@ import { sendMessageToAPI } from "../api/ChatAPI";
 import axios from "axios";
 import Sidebar from "../components/Sidebar";
 import { TailSpin } from "react-loader-spinner";
-import assistantPfp from "../../public/sahabat_wibu.png";
-import userPfp from "../../public/sahabat_ai.png";
+import assistantPfp from "/sahabat_ai.png";
+import userPfp from "/sahabat_wibu.png";
 
 export const Chat: React.FC = () => {
   const [messages, setMessages] = useState<{ role: string; content: string }[]>(
